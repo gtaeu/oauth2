@@ -1,0 +1,22 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/oauthdb?useSSL=false
+    username: root
+    password: dirnqkqh21
+
+  jpa:
+    database: mysql
+    # InnoDB설정 트랜잭션 지원이 되는 DB
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    # 테이블을 자동으로 만들어줌
+    generate-ddl: true
+    hibernate:
+      ddl-auto: create
+    # 쿼리문 보임
+    show_sql: true
+
+jwt:
+  # 32글자 이상 인코딩된 문자열: oauthServersecretgtaeutokenoauthServersecretgtaeutoken
+  secret: b2F1dGhTZXJ2ZXJzZWNyZXRndGFldXRva2Vub2F1dGhTZXJ2ZXJzZWNyZXRndGFldXRva2Vu
+  expiration: 3000 #분 단위
