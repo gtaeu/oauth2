@@ -52,11 +52,12 @@ public class MemberService {
         return member;
     }
 
+    // oauth를 통한 회원가입
     public Member createOauth(String socialId, String email, SocialType socialType) {
         Member member = Member.builder()
                 .email(email)
                 .socialId(socialId)
-                .socialType(socialType)
+                .socialType(socialType) // 구굴 or 카카오
                 .build();
         memberRepository.save(member);
         return member;

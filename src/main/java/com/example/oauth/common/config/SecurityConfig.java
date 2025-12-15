@@ -2,6 +2,7 @@ package com.example.oauth.common.config;
 
 import com.example.oauth.common.auth.JwtTokenFilter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -21,7 +22,14 @@ import java.util.Arrays;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final JwtTokenFilter jwtTokenFilter;
+    @Value("${jwt.secret}")
+    private String secretKey;
+
+    @Bean
+    public JwtTokenFilter jwtTokenFilter() {
+        // JwtTokenFilter의 새로운 생성자(secretKey)를 호출
+        return new JwtTokenFilter(secretKey);
+    }
 
     // Configuration과 Bean의 조합으로 이 메서드가 리턴하는 객체를 스프링 컨테이너에 싱글톤 객체로 등록해줌
     // 나는 MemberService에서 PasswordEncoder(리턴값)만 의존성 주입해주면 된다
@@ -42,14 +50,17 @@ public class SecurityConfig {
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 // 특정 api에 대해서 인증처리(Authentication 객체 생성) 제외
                 .authorizeHttpRequests(a -> a.requestMatchers(
-                        "/api/member/create",
-                        "/api/member/login")
+                            "/api/member/create",
+                            "/api/member/login",
+                            "/api/member/google/login",
+                            "/api/member/kakao/login"
+                        )
                         .permitAll()
                         .anyRequest().authenticated())
                 // UsernamePasswordAuthenticationFilter 이거는 스프링에서 기본적으로 제공하는 폼로그인시 사용하는 필터인데
                 // 우리는 폼로그인안쓸거임(이거는 화면단까지 만드는 MVC패턴에서 사용)
                 // 그래서 UsernamePasswordAuthenticationFilter 전에 jwtTokenFilter 추가해서 인증객체를 만들어 저 토큰 무력화시킴
-                .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtTokenFilter(), UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 

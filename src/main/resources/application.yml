@@ -20,3 +20,14 @@ jwt:
   # 32글자 이상 인코딩된 문자열: oauthServersecretgtaeutokenoauthServersecretgtaeutoken
   secret: b2F1dGhTZXJ2ZXJzZWNyZXRndGFldXRva2Vub2F1dGhTZXJ2ZXJzZWNyZXRndGFldXRva2Vu
   expiration: 3000 #분 단위
+
+
+oauth:
+  google:
+    client-id: 1041718432862-6a0n3uflme0sg6qt1a4653319gu1kq2o.apps.googleusercontent.com
+    client-secret: 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
+    redirect-uri: http://localhost:3000/oauth/google/redirect
+
+  kakao:
+    client-id: e54317d9dd7073c1bd72533f2cdcbfb6
+    redirect-uri: http://localhost:3000/oauth/kakao/redirect
