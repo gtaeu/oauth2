@@ -2,6 +2,8 @@ package com.example.oauth.common.auth;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -46,7 +48,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                 // 토큰 파싱
                 Claims claims = Jwts.parserBuilder()
                         // secretKey가 Base64 인코딩 된 문자열이라고 가정하고 바이트로 변환
-                        .setSigningKey(secretKey.getBytes(StandardCharsets.UTF_8))
+                        .setSigningKey(Keys.hmacShaKeyFor(Decoders.BASE64.decode(secretKey)))
                         .build()
                         .parseClaimsJws(jwtToken)
                         .getBody();
